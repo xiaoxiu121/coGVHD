@@ -16,15 +16,19 @@ pip install flash_attn-2.3.5+cu117torch2.0cxx11abiFALSE-cp39-cp39-linux_x86_64.w
 ```
 
 
-## Data Preparation
+## Model Preparation
 
 
 
-And you need to download the model Qwen-VL-Chat from [here](https://huggingface.co/Qwen/Qwen-VL-Chat) for initialization and put it under `Qwen_VL/`. Then run 
+And you need to download the model Qwen-VL-Chat from [here](https://huggingface.co/Qwen/Qwen-VL-Chat) for initialization and put it under `./Qwen_VL/`. Then run 
 ```
 python build_model.py
 ```  
-It will generate our own model,specifically extending the modality adaptability. It's initial parameters are inherited from Qwen-VL-Chat, and creates a new folder Qwen_VL_new.
+It will develop our own model with enhanced modality adaptability. Inherit initial parameters from Qwen-VL-Chat, then creat a new folder named `./Qwen_VL_new/` to store the model. Subsequent training will be conducted based on this generated checkpoint.
+
+## Data Preparation
+File in `/data` records the sample data and identifies the data content and format.
+
 
 ## Training
 **step 1**: Training for knowledge alignment of tabular embedding modules
@@ -38,11 +42,12 @@ Please change the `ckpt_path` to the generated Qwen_VL_new model.
 ```
 bash finetune/finetune_ds_medical_two_tasks2.sh
 ```
-Please change the `ckpt_path` to the pretrained model path in stage 1.
+Please change the `ckpt_path` to the pretrained model path in step 1.
+
 
 
 ## Evaluation
-Run `python eval_for_2task/evaluate_bysy_json_auc.py` to test a trained model
+Run `python eval_for_2task/evaluate_bysy_json_auc.py` to test a trained model. Then run `python eval_for_2task/cal_accurate_8.py` to calculate metrics.
 
 
 ## Acknowledgment
