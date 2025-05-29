@@ -16,9 +16,9 @@ from transformers import Trainer, GPTQConfig, deepspeed
 from transformers.trainer_pt_utils import LabelSmoother
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from accelerate.utils import DistributedType
-# from Qwen_VL_new2.modeling_qwen import QWenLMHeadModel
-# from Qwen_VL_new2.tokenization_qwen import QWenTokenizer
-# from Qwen_VL_new2.configuration_qwen import QWenConfig
+# from Qwen_VL_new.modeling_qwen import QWenLMHeadModel
+# from Qwen_VL_new.tokenization_qwen import QWenTokenizer
+# from Qwen_VL_new.configuration_qwen import QWenConfig
 
 from transformers import AutoModelForCausalLM, AutoTokenizer, AutoConfig
 
@@ -162,7 +162,7 @@ def preprocess(
                 _input_id = tokenizer(role).input_ids + nl_tokens + \
                 tokenizer(sentence["value"]).input_ids + [im_end] + nl_tokens # value中的图片信息没有处理,直接tokenizer了
             except:
-                print(11111111111, sentence["value"])
+                print(sentence["value"])
                 raise Exception
             input_id += _input_id
             if role == '<|im_start|>user':
@@ -348,7 +348,7 @@ def train():
 
     local_rank = training_args.local_rank
 
-    device_map = None #None # auto
+    device_map = None 
     world_size = int(os.environ.get("WORLD_SIZE", 1))
     ddp = world_size != 1
     if lora_args.q_lora:
@@ -381,12 +381,12 @@ def train():
     )
 
     if not training_args.use_lora:
-        if training_args.fix_llm: # 仅仅控制中心模块，不控制3个编码器模块
+        if training_args.fix_llm: 
             model.transformer.requires_grad_(False)
             model.transformer.wte.requires_grad_(True)
             model.transformer.json_wte.requires_grad_(True) 
             model.transformer.visual.requires_grad_(True)
-            if hasattr(model.transformer.visual,'attn_pool'): # 永远训练
+            if hasattr(model.transformer.visual,'attn_pool'): 
                 model.transformer.visual.attn_pool.requires_grad_(True)
                 model.transformer.visual.proj.requires_grad_(True)
                 model.transformer.visual.ln_post.requires_grad_(True)
