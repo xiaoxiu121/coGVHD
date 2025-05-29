@@ -14,7 +14,6 @@ MASTER_PORT=6008
 
 MODEL='/path/to/alignment_model' # 最新的对齐模型
 
-
 DATA1='./data/data_warning.json' # 预警数据
 DATA2='./data/data_diagnosis.json' # 诊断数据
 
