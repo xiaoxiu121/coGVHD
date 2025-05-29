@@ -27,7 +27,7 @@ python build_model.py
 It will develop our own model with enhanced modality adaptability. It inherit initial parameters from Qwen-VL-Chat, and creat a new folder named `./Qwen_VL_new/` to store the model. Subsequent training will be conducted based on this generated checkpoint.
 
 ## Data Preparation
-File in `/data` records the sample data and identifies the data content and format. To clearly, in the data of the early warning task, the speech recognition result is given directly. It is recognized by [Qwen-audio](https://github.com/QwenLM/Qwen-Audio).
+File in `/data` records the sample data and identifies the data content and format in training. For brevity and clarity, in the data of the early warning task, the speech recognition result is provided directly. It is recognized by [Qwen-audio](https://github.com/QwenLM/Qwen-Audio).
 
 
 ## Training
