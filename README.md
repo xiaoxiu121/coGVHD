@@ -27,15 +27,15 @@ python build_model.py
 It will develop our own model with enhanced modality adaptability. It inherit initial parameters from Qwen-VL-Chat, and creat a new folder named `./Qwen_VL_new/` to store the model. Subsequent training will be conducted based on this generated checkpoint.
 
 ## Data Preparation
-File in `/data` records the sample data and identifies the data content and format in training. For brevity and clarity, in the data of the early warning task, the speech recognition result is provided directly. It is recognized by [Qwen-audio](https://github.com/QwenLM/Qwen-Audio).
+Files in `/data` record the sample data, which identify the data content and format. For brevity and clarity, in the data of the early warning task, the speech recognition result is provided directly. It is recognized by [Qwen-audio](https://github.com/QwenLM/Qwen-Audio).
 
 
 ## Training
-**step 1**: Training for knowledge alignment of tabular embedding modules
+**step 1**: Training for knowledge alignment of tabular embedding module
 ```
 bash finetune/finetune1_ds_alignment.sh
 ```
-Please change the `ckpt_path` to the generated Qwen_VL_new model.
+Please change the `ckpt_path` to the generated Qwen_VL_new path.
 
 
 **step 2**: Training the whole model
@@ -47,7 +47,7 @@ Please change the `ckpt_path` to the pretrained model path in step 1.
 
 
 ## Evaluation
-Run `bash eval/run_eval.sh` to test a trained model. Then run `python eval/cal_accurate_warning.py`  or `python eval/cal_accurate_diagnosis.py` to calculate metrics for early warning or diagnosis tasks.
+Run `bash eval/run_eval.sh` to evaluate a trained model. Then run `python eval/cal_accurate_warning.py`  or `python eval/cal_accurate_diagnosis.py` to calculate metrics for early warning or diagnosis tasks.
 
 
 ## Acknowledgment
