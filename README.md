@@ -20,34 +20,34 @@ pip install flash_attn-2.3.5+cu117torch2.0cxx11abiFALSE-cp39-cp39-linux_x86_64.w
 
 
 
-And you need to download the model Qwen-VL-Chat from [here](https://huggingface.co/Qwen/Qwen-VL-Chat) for initialization and put it under `./Qwen_VL/`. Then run 
+You need to download the `pytorch_model-*-of-00010.bin` parameter files of Qwen-VL-Chat from [here](https://huggingface.co/Qwen/Qwen-VL-Chat) and put it under `./Qwen_VL_tmp/`. Please do not download other files. Then run 
 ```
 python build_model.py
 ```  
-It will develop our own model with enhanced modality adaptability. Inherit initial parameters from Qwen-VL-Chat, then creat a new folder named `./Qwen_VL_new/` to store the model. Subsequent training will be conducted based on this generated checkpoint.
+It will develop our own model with enhanced modality adaptability. It inherit initial parameters from Qwen-VL-Chat, and creat a new folder named `./Qwen_VL_new/` to store the model. Subsequent training will be conducted based on this generated checkpoint.
 
 ## Data Preparation
-File in `/data` records the sample data and identifies the data content and format.
+File in `/data` records the sample data and identifies the data content and format. To clearly, in the data of the early warning task, the speech recognition result is given directly. It is recognized by [Qwen-audio](https://github.com/QwenLM/Qwen-Audio).
 
 
 ## Training
 **step 1**: Training for knowledge alignment of tabular embedding modules
 ```
-bash finetune/finetune_ds_medical_alignment_0830.sh
+bash finetune/finetune1_ds_alignment.sh
 ```
 Please change the `ckpt_path` to the generated Qwen_VL_new model.
 
 
 **step 2**: Training the whole model
 ```
-bash finetune/finetune_ds_medical_two_tasks2.sh
+bash finetune/finetune2_ds_2task.sh
 ```
 Please change the `ckpt_path` to the pretrained model path in step 1.
 
 
 
 ## Evaluation
-Run `python eval_for_2task/evaluate_bysy_json_auc.py` to test a trained model. Then run `python eval_for_2task/cal_accurate_8.py` to calculate metrics.
+Run `bash eval/run_eval.sh` to test a trained model. Then run `python eval/cal_accurate_warning.py`  or `python eval/cal_accurate_diagnosis.py` to calculate metrics for early warning or diagnosis tasks.
 
 
 ## Acknowledgment

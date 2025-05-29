@@ -137,7 +137,6 @@ def preprocess(
     system_message: str = "You are a helpful assistant."
 ) -> Dict:
     roles = {"user": "<|im_start|>user", "assistant": "<|im_start|>assistant"}
-    # print(1111111111, sources)
 
     im_start = tokenizer.im_start_id # 都是id
     im_end = tokenizer.im_end_id
@@ -174,11 +173,7 @@ def preprocess(
             else:
                 raise NotImplementedError
             target += _target
-        # print(2222222222, input_id)
         assert len(input_id) == len(target)
-        # print(2222222222, len(input_id), max_len)
-        # input_id += [tokenizer.pad_token_id] * (max_len - len(input_id))
-        # target += [IGNORE_TOKEN_ID] * (max_len - len(target))
         input_ids.append(input_id[:max_len])
         targets.append(target[:max_len])
     input_ids = torch.tensor(input_ids, dtype=torch.int)
@@ -210,7 +205,7 @@ def preprocess_pt(
             if role == '<|im_start|>user':
                 _target = [IGNORE_TOKEN_ID] * len(_input_id)
             elif role == '<|im_start|>assistant':
-                _target = _input_id # 这里应该是有问题的
+                _target = _input_id 
             else:
                 raise NotImplementedError
             target += _target
@@ -265,7 +260,6 @@ class LazySupervisedDataset(Dataset):
         rank0_print("Formatting inputs...Skip in lazy mode")
         self.tokenizer = tokenizer
         self.raw_data = raw_data
-        # print('0000000000000000',raw_data[0])
         self.cached_data_dict = {}
 
     def __len__(self):
@@ -275,17 +269,12 @@ class LazySupervisedDataset(Dataset):
         if i in self.cached_data_dict:
             return self.cached_data_dict[i]
 
-        # ret = preprocess([self.raw_data[i]["conversations"]], self.tokenizer, self.max_len)
         if 'type' in self.raw_data[i] and self.raw_data[i]['type'] == 'stage3':
             ret = preprocess([self.raw_data[i]["conversations"]], self.tokenizer, self.max_len)
         else:
             ret = preprocess_pt([self.raw_data[i]["conversations"]], self.tokenizer, self.max_len)
         
-        # if self.raw_data[i]['type'] == 'stage3':
-        #     ret = preprocess([self.raw_data[i]["conversations"]], self.tokenizer, self.max_len) # 这里标注一下是PT还是SFT就行了，数据预处理的时候加上
-        # elif self.raw_data[i]['type'] == 'stage1':
-        #     ret = preprocess_pt([self.raw_data[i]["conversations"]], self.tokenizer, self.max_len)
-        ret = dict(
+       ret = dict(
             input_ids=ret["input_ids"][0],
             labels=ret["labels"][0],
             attention_mask=ret["attention_mask"][0],
@@ -310,7 +299,6 @@ def make_supervised_data_module(
             all_data.extend(train_json)
     else:
         all_data = json.load(open(data_args.data_path, "r"))
-    print('111111111111111111 all data length', len(all_data))
     train_dataset = dataset_cls(all_data, tokenizer=tokenizer, max_len=max_len)
 
     if data_args.eval_data_path:
@@ -447,7 +435,6 @@ def train():
             model.enable_input_require_grads()
 
     # Load data
-    # print(66666666666666666666, training_args.model_max_length)
     data_module = make_supervised_data_module(
         tokenizer=tokenizer, data_args=data_args, max_len=training_args.model_max_length
     )
