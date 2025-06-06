@@ -59,10 +59,6 @@ for file in file_list:
             elif t2=='检查结果为未发生慢性移植物抗宿主病':
                 t2 = '未发生排异'
             
-            if  t2 not in ['慢性移植物抗宿主病', '未发生排异']:
-                print('bug', t2)
-                continue
-            
             if t1==t2:
                 correct += 1
             else:

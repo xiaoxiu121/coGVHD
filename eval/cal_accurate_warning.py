@@ -54,10 +54,6 @@ for file in file_list:
                 correct += 1
             else:
                 print(i['question_id'], t1, t2)
-            if t2 in ['高风险', '低风险']:
-                pass
-            else:
-                continue
             
             prob = round(float(i['probs']) , 2)  
             if t1=='高风险':
